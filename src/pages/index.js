@@ -1,184 +1,179 @@
 import * as React from "react"
-
-// styles
-const pageStyles = {
-  color: "#232129",
-  padding: 96,
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-}
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-}
-const headingAccentStyles = {
-  color: "#663399",
-}
-const paragraphStyles = {
-  marginBottom: 48,
-}
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-}
-const listStyles = {
-  marginBottom: 96,
-  paddingLeft: 0,
-}
-const listItemStyles = {
-  fontWeight: 300,
-  fontSize: 24,
-  maxWidth: 560,
-  marginBottom: 30,
-}
-
-const linkStyle = {
-  color: "#8954A8",
-  fontWeight: "bold",
-  fontSize: 16,
-  verticalAlign: "5%",
-}
-
-const docLinkStyle = {
-  ...linkStyle,
-  listStyleType: "none",
-  marginBottom: 24,
-}
-
-const descriptionStyle = {
-  color: "#232129",
-  fontSize: 14,
-  marginTop: 10,
-  marginBottom: 0,
-  lineHeight: 1.25,
-}
-
-const docLink = {
-  text: "Documentation",
-  url: "https://www.gatsbyjs.com/docs/",
-  color: "#8954A8",
-}
-
-const badgeStyle = {
-  color: "#fff",
-  backgroundColor: "#088413",
-  border: "1px solid #088413",
-  fontSize: 11,
-  fontWeight: "bold",
-  letterSpacing: 1,
-  borderRadius: 4,
-  padding: "4px 6px",
-  display: "inline-block",
-  position: "relative",
-  top: -2,
-  marginLeft: 10,
-  lineHeight: 1,
-}
-
-// data
-const links = [
-  {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial/",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-    color: "#E95800",
-  },
-  {
-    text: "How to Guides",
-    url: "https://www.gatsbyjs.com/docs/how-to/",
-    description:
-      "Practical step-by-step guides to help you achieve a specific goal. Most useful when you're trying to get something done.",
-    color: "#1099A8",
-  },
-  {
-    text: "Reference Guides",
-    url: "https://www.gatsbyjs.com/docs/reference/",
-    description:
-      "Nitty-gritty technical descriptions of how Gatsby works. Most useful when you need detailed information about Gatsby's APIs.",
-    color: "#BC027F",
-  },
-  {
-    text: "Conceptual Guides",
-    url: "https://www.gatsbyjs.com/docs/conceptual/",
-    description:
-      "Big-picture explanations of higher-level Gatsby concepts. Most useful for building understanding of a particular topic.",
-    color: "#0D96F2",
-  },
-  {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-    color: "#8EB814",
-  },
-  {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    badge: true,
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Gatsby Cloud. Get started for free!",
-    color: "#663399",
-  },
-]
-
-// markup
+import axios from 'axios';
+import {Badge, Button, Form, FormControl, FormGroup, FormLabel} from 'react-bootstrap';
+import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Helmet} from "react-helmet";
+import favicon from '../images/icon.png'
+import {signIn} from "../firebase";
 const IndexPage = () => {
-  return (
-    <main style={pageStyles}>
-      <title>Home Page</title>
-      <h1 style={headingStyles}>
-        Congratulations
-        <br />
-        <span style={headingAccentStyles}>— you just made a Gatsby site! </span>
-        <span role="img" aria-label="Party popper emojis">
-          🎉🎉🎉
-        </span>
-      </h1>
-      <p style={paragraphStyles}>
-        Edit <code style={codeStyles}>src/pages/index.js</code> to see this page
-        update in real-time.{" "}
-        <span role="img" aria-label="Sunglasses smiley emoji">
-          😎
-        </span>
-      </p>
-      <ul style={listStyles}>
-        <li style={docLinkStyle}>
-          <a
-            style={linkStyle}
-            href={`${docLink.url}?utm_source=starter&utm_medium=start-page&utm_campaign=minimal-starter`}
-          >
-            {docLink.text}
-          </a>
-        </li>
-        {links.map(link => (
-          <li key={link.url} style={{ ...listItemStyles, color: link.color }}>
-            <span>
-              <a
-                style={linkStyle}
-                href={`${link.url}?utm_source=starter&utm_medium=start-page&utm_campaign=minimal-starter`}
-              >
-                {link.text}
-              </a>
-              {link.badge && (
-                <span style={badgeStyle} aria-label="New Badge">
-                  NEW!
-                </span>
-              )}
-              <p style={descriptionStyle}>{link.description}</p>
-            </span>
-          </li>
-        ))}
-      </ul>
-      <img
-        alt="Gatsby G Logo"
-        src="data:image/svg+xml,%3Csvg width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 2a10 10 0 110 20 10 10 0 010-20zm0 2c-3.73 0-6.86 2.55-7.75 6L14 19.75c3.45-.89 6-4.02 6-7.75h-5.25v1.5h3.45a6.37 6.37 0 01-3.89 4.44L6.06 9.69C7 7.31 9.3 5.63 12 5.63c2.13 0 4 1.04 5.18 2.65l1.23-1.06A7.959 7.959 0 0012 4zm-8 8a8 8 0 008 8c.04 0 .09 0-8-8z' fill='%23639'/%3E%3C/svg%3E"
-      />
-    </main>
-  )
+    const [from, setFrom] = React.useState("");
+    const [contacts, setContacts] = React.useState("");
+    const [message, setMessage] = React.useState("");
+    const [phones, setPhones] = React.useState([]);
+    const [loading,setLoading]=React.useState(false);
+    const [loggedIn,setLoggedIn]=React.useState(false);
+    const [password,setPassword]=React.useState("");
+    function reset(){
+        setLoading(false)
+        setMessage('')
+        setContacts('')
+        setPhones([])
+        setFrom('')
+    }
+    function getCleanArray(str) {
+        if(!str)return []
+        const rawSplit = str.split(/[\n,\s]+/);
+        const cleanStrings = rawSplit.map(contact => contact.split('').filter(char => char >= '0' && char <= '9').join(''));
+        const final = cleanStrings.filter(phone => phone.length === 11);
+        return [...new Set(final)]
+    }
+
+    function onSubmit(e) {
+        e.preventDefault();
+        if(!contacts){
+            alert("Contacts box empty!");
+            return;
+        }
+        if(!message){
+            alert("Message box empty!");
+            return;
+        }
+        const cleanFrom=from.split('').filter(char => char >= '0' && char <= '9').join('');
+        if(cleanFrom.length!==11){
+            alert("Invalid From");
+            return;
+        }
+        setFrom(cleanFrom)
+        const parsedPhones=getCleanArray(contacts);
+        if(parsedPhones.length===0){
+            alert("No Valid Phone Number!");
+            return;
+        }
+        setPhones(parsedPhones);
+    }
+
+    function onFileChange(e) {
+        if (e.target.files.length === 0) return;
+        const file = e.target.files[0];
+        if (file.type !== "text/plain") {
+            e.target.value = null;
+            alert("Kindly provide a .txt file");
+            return;
+        }
+        let reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function () {
+            if (reader.result) {
+                const txt = reader.result.toString();
+                const arr = getCleanArray(txt);
+                const contactsArr = getCleanArray(contacts);
+                let s = ""
+                contactsArr.forEach(c => s += `${c}, `);
+                arr.forEach(c => s += `${c}, `);
+                if (s.length > 2) {
+                    s = s.slice(0, s.length - 2);
+                }
+                setContacts(s);
+
+
+            }
+            e.target.value = null;
+        };
+
+        reader.onerror = function () {
+            console.log(reader.error);
+            e.target.value = null;
+        };
+    }
+
+    function send() {
+        setLoading(true);
+        axios.post('https://us-central1-nexmo-50c56.cloudfunctions.net/sendMessage',{
+            to:phones,
+            from,
+            text:message
+        }).then(res=>{
+            if(res.data.failed){
+                if(res.data.failed.length>0){
+                    alert("SMS failed for "+res.data.failed.join(', '));
+                    return;
+                }
+            }
+            alert("Messages sent successfully!")
+        }).catch(err=>{
+            console.error(err);
+            alert("An error occurred!")
+        }).finally(reset)
+    }
+    async function onLoginFormSubmit(e){
+        e.preventDefault();
+        setLoggedIn(await signIn(password));
+    }
+
+    return (
+        <main>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>SMS Sender</title>
+                <link rel="icon" type="image/png" href={favicon} sizes="16x16" />
+            </Helmet>
+            {!loggedIn&&<div>
+                <h2>LOGIN</h2>
+                <Form onSubmit={onLoginFormSubmit}>
+                <FormGroup className={'form-group'}>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl required={true} className={'form-control'} placeholder="Enter Password" type="password" name="password"
+                                 value={password}
+                                 onChange={(e) => setPassword(e.target.value)}/>
+                </FormGroup>
+                <FormGroup className={'form-group'}>
+                    <Button variant={'info'} type={'submit'}>Send</Button>
+                </FormGroup>
+            </Form></div>}
+            {loggedIn&&phones.length === 0 && <div>
+                <h1 className="form-heading">SMS Sender</h1>
+                <Form onSubmit={onSubmit}>
+                    <FormGroup className={'form-group'}>
+                        <FormLabel>From</FormLabel>
+                        <FormControl className={'form-control'} placeholder="Enter From"
+                                     value={from}
+                                     onChange={(e) => setFrom(e.target.value)}/>
+                    </FormGroup>
+                    <FormGroup className={'form-group'}>
+                        <FormLabel>Contacts list (seperated by comma)</FormLabel>
+                        <FormControl className={'form-control'} placeholder="Enter Contacts (seperated by a comma)"
+                               value={contacts}
+                               onChange={(e) => setContacts(e.target.value)}/>
+                    </FormGroup>
+                    <FormGroup className={'form-group'}>
+                        <FormLabel >Add a txt file</FormLabel>
+                        <FormControl type={'file'} placeholder="Choose text file"
+                               onChange={onFileChange}/>
+                    </FormGroup>
+                    <FormGroup className={'form-group'}>
+                        <FormLabel >Message to send</FormLabel>
+
+                        <FormControl as={'textarea'} placeholder="Enter your message" value={message}
+                                  onChange={(e) => setMessage(e.target.value)}/>
+                    </FormGroup>
+                    <FormGroup className={'form-group'}>
+                        <Button variant={'success'} type={'submit'}>Send</Button>
+                        <Button variant={'danger'} className={'m-2 my-3'} onClick={reset}>Reset</Button>
+
+                    </FormGroup>
+                </Form>
+            </div>}
+            {loggedIn&&phones.length > 0 && <div className={'confirm'}>
+                <h3 className={'confirm-heading m-2'}>Confirm the following phone numbers and message:</h3>
+                <div className={'phones'}>{phones.map(p => <Badge pill={true} bg={'warning'} className={'m-2 phone'} key={p}>+{p}</Badge>)}</div>
+                <div className={'message m-2'}><b>Message: </b><i>{message}</i></div>
+                <div className={'message m-2'}><b>From: </b><i>+{from}</i></div>
+                <Button disabled={loading} variant={'success'} className={'m-2 my-3'} onClick={send}>Send</Button>
+                <Button disabled={loading} variant={'danger'} className={'m-2 my-3'} onClick={()=>setPhones([])}>Back</Button>
+            </div>}
+        </main>
+    )
 }
 
 export default IndexPage
