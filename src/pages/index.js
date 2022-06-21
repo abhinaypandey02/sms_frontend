@@ -39,12 +39,10 @@ const IndexPage = () => {
             alert("Message box empty!");
             return;
         }
-        const cleanFrom=from.split('').filter(char => char >= '0' && char <= '9').join('');
-        if(cleanFrom.length!==11){
+        if(from.length>11){
             alert("Invalid From");
             return;
         }
-        setFrom(cleanFrom)
         const parsedPhones=getCleanArray(contacts);
         if(parsedPhones.length===0){
             alert("No Valid Phone Number!");
@@ -136,7 +134,7 @@ const IndexPage = () => {
                 <Form onSubmit={onSubmit}>
                     <FormGroup className={'form-group'}>
                         <FormLabel>From</FormLabel>
-                        <FormControl className={'form-control'} placeholder="Enter From"
+                        <FormControl maxLength={11} className={'form-control'} placeholder="Enter From"
                                      value={from}
                                      onChange={(e) => setFrom(e.target.value)}/>
                     </FormGroup>
@@ -168,7 +166,7 @@ const IndexPage = () => {
                 <h3 className={'confirm-heading m-2'}>Confirm the following phone numbers and message:</h3>
                 <div className={'phones'}>{phones.map(p => <Badge pill={true} bg={'warning'} className={'m-2 phone'} key={p}>+{p}</Badge>)}</div>
                 <div className={'message m-2'}><b>Message: </b><i>{message}</i></div>
-                <div className={'message m-2'}><b>From: </b><i>+{from}</i></div>
+                <div className={'message m-2'}><b>From: </b><i>{from}</i></div>
                 <Button disabled={loading} variant={'success'} className={'m-2 my-3'} onClick={send}>Send</Button>
                 <Button disabled={loading} variant={'danger'} className={'m-2 my-3'} onClick={()=>setPhones([])}>Back</Button>
             </div>}
